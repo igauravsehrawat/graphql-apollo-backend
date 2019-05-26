@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/igaurav/advanced-react-backend/dev
-# timestamp: Wed May 22 2019 22:09:57 GMT+0200 (CEST)
+# timestamp: Wed May 22 2019 22:55:05 GMT+0200 (CEST)
 
 type AggregateUser {
   count: Int!
@@ -294,4 +294,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }
