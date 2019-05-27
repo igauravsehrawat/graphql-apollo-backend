@@ -1,7 +1,7 @@
-Mutations = {
+type Mutation {
     hi: String,
 }
 
-Query = {
+type Query {
     hi: String,
 }
