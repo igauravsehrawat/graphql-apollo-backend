@@ -1,0 +1,7 @@
+Mutations = {
+    hi: String,
+}
+
+Query = {
+    hi: String,
+}
