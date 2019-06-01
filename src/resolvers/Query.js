@@ -3,6 +3,7 @@ const Query = {
   // not the typescript way
   dogs(parent, args, ctx, info) {
     console.log('The args are', args);
+    return [{name: 'Prinkles'}];
   }
 }
 

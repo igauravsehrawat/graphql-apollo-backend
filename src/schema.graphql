@@ -3,9 +3,9 @@ type Dog {
 }
 
 type Mutation {
-    createDog(): [Dog]
+    createDog: [Dog]
 }
 
 type Query {
-    getDogs(): [Dog]!
+    dogs: [Dog]!
 }
