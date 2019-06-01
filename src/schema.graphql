@@ -3,7 +3,7 @@ type Dog {
 }
 
 type Mutation {
-    createDog: [Dog]
+    createDog(name: String!): Dog
 }
 
 type Query {

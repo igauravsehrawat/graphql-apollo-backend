@@ -2,8 +2,8 @@ const Query = {
   // just write the function, type check is done differently
   // not the typescript way
   dogs(parent, args, ctx, info) {
-    console.log('The args are', args);
-    return [{name: 'Prinkles'}];
+    global.dogs = global.dogs || [];
+    return global.dogs;
   }
 }
 
