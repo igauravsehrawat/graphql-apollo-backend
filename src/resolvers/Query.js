@@ -1,9 +1,8 @@
 const Query = {
-  // just write the function, type check is done differently
-  // not the typescript way
-  dogs(parent, args, ctx, info) {
-    global.dogs = global.dogs || [];
-    return global.dogs;
+  async items(parent, args, ctx, info) {
+    // If you see in prisma.graphql there is Query but here we using query
+    const items = await ctx.db.query.items(args, info);
+    return items;
   }
 }
 

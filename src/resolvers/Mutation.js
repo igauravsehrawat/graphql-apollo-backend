@@ -1,10 +1,13 @@
 const Mutations = {
-  createDog(parent, args, ctx, info) {
-    global.dogs = global.dogs || [];
-    console.log('The args for the mutation are', args);
-    const newDog = { name: args.name };
-    global.dogs.push(newDog);
-    return newDog;
+  // TODO: Write the authentication layer
+  async createItem(parent, args, ctx, info) {
+    // If you see in prisma.graphql there is Mutation but here we using mutation
+    const item = await ctx.db.mutation.createItem({
+      data: {
+        ...args
+      },
+    }, info);
+    return item;
   }
 };
 
