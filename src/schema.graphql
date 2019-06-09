@@ -7,9 +7,20 @@ type Mutation {
         image: String,
         largeImage: String,
         price: Int
-    ): Item
+    ): Item!
+
+    updateItem(
+        id: ID!,
+        title: String,
+        description: String,
+        price: Int,
+        image: String,
+        largeImage: String,
+    ): Item!
 }
 
 type Query {
     items: [Item]!
+    #  where: {id: ID} but let's stick to prisma standards
+    item(where: ItemWhereUniqueInput!): Item
 }

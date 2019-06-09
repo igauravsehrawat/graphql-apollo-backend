@@ -8,6 +8,19 @@ const Mutations = {
       },
     }, info);
     return item;
+  },
+
+  updateItem(parent, args, ctx, info){
+    const updateData = { ...args };
+    delete updateData.id;
+    return ctx.db.mutation.updateItem({
+      data: {
+        ...args
+      },
+      where: {
+        id: args.id
+      }
+    }, info);
   }
 };
 
