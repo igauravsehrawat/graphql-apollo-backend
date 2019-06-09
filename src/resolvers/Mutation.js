@@ -10,7 +10,7 @@ const Mutations = {
     return item;
   },
 
-  updateItem(parent, args, ctx, info){
+  updateItem(parent, args, ctx, info) {
     const updateData = { ...args };
     delete updateData.id;
     return ctx.db.mutation.updateItem({
@@ -23,6 +23,16 @@ const Mutations = {
     },
       info
     )
+  },
+
+  async deleteItem(parent, args, ctx, info) {
+    const where = { id: args.id };
+    // 1. Check if item exists
+    const item = await ctx.db.query.item({ where }, `{ id title }`);
+    // 2. Check permission
+    // TODO:
+    // 3. Delete Item
+    return ctx.db.mutation.deleteItem({ where }, info);
   }
 };
 
