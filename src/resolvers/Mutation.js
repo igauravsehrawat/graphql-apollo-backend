@@ -15,12 +15,14 @@ const Mutations = {
     delete updateData.id;
     return ctx.db.mutation.updateItem({
       data: {
-        ...args
+        ...updateData
       },
       where: {
         id: args.id
       }
-    }, info);
+    },
+      info
+    )
   }
 };
 
