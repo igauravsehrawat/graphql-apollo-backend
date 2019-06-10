@@ -38,7 +38,7 @@ const Mutations = {
     return ctx.db.mutation.deleteItem({ where }, info);
   },
 
-  async createUser(parent, args, ctx, info) {
+  async signUp(parent, args, ctx, info) {
     args.email = args.email.toLowerCase();
     const password = await bcrypt.hash(args.password, 10);
     const user = await ctx.db.mutation.createUser(
