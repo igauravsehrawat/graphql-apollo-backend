@@ -21,6 +21,12 @@ type Mutation {
     deleteItem(
         id: ID!
     ): Item
+
+    createUser(
+        name: String!
+        email: String!
+        password: String!
+    ): User!
 }
 
 type Query {
