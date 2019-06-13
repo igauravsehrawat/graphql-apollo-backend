@@ -22,7 +22,7 @@ type Mutation {
         id: ID!
     ): Item
 
-    signUp(
+    signup(
         name: String!
         email: String!
         password: String!
