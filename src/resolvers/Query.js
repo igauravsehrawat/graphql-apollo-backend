@@ -10,6 +10,18 @@ const Query = {
   item: forwardTo('db'),
 
   itemsConnection: forwardTo('db'),
+  me(parent, args, ctx, info) {
+    const userId = ctx.request.userId;
+    if (userId) {
+      return ctx.db.query.user({
+        where: {
+          id: userId
+        }
+      }, info);
+    } else {
+      return null;
+    }
+  }
 }
 
 module.exports = Query;
