@@ -56,7 +56,24 @@ const Mutations = {
       maxAge: 1000 * 60 * 24,
     });
     return user;
-  }
+  },
+
+  async signin(parent, { email, password }, ctx, info) {
+    const user = await ctx.db.query.user({ where: { email } });
+    if (!user) {
+      throw Error(`User does not exists by ${user.email}`);
+    }
+    const valid = await bcrypt.compare(password, user.password);
+    if (!valid) {
+      throw Error('Password entered is not correct.');
+    }
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 24,
+    });
+    return user;
+  },
 };
 
 module.exports = Mutations;
