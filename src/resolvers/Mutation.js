@@ -58,6 +58,7 @@ const Mutations = {
     return user;
   },
 
+  // notice the destructing of the args
   async signin(parent, { email, password }, ctx, info) {
     const user = await ctx.db.query.user({ where: { email } });
     if (!user) {
@@ -73,6 +74,12 @@ const Mutations = {
       maxAge: 1000 * 60 * 24,
     });
     return user;
+  },
+  signout(parent, args, ctx, info) {
+    ctx.response.clearCookie('token');
+    return {
+      message: 'Goodbye;)',
+    }
   },
 };
 
