@@ -84,25 +84,68 @@ const Mutations = {
     }
   },
   async requestReset (parent, args, ctx, info) {
-  // 1. Check if user exists
-  const user = ctx.db.query.user({ where: { email: args.email } });
-  if (!user) {
-      throw Error(`User does not exists by ${args.email}`);
-  }
-  // 2. Generate the reset token and set it to User
-  const randomBytesPromisified = promisify(randomBytes);
-  const resetToken = (await randomBytesPromisified(20)).toString('hex');
-  const resetTokenExpiry = Date.now() + 3600000; // one hour = 3600000
-  const updatedUser = await ctx.db.mutation.updateUser({
-    where: { email: args.email },
-    data: { resetToken, resetTokenExpiry }
-  });
-  console.log('updated user', updatedUser);
-  return {
-    message: 'Check inbox for the instructions!.',
-  }
-  // 3. Send the email for the token
-  }
+    // 1. Check if user exists
+    const user = ctx.db.query.user({ where: { email: args.email } });
+    if (!user) {
+        throw Error(`User does not exists by ${args.email}`);
+    }
+    // 2. Generate the reset token and set it to User
+    const randomBytesPromisified = promisify(randomBytes);
+    const resetToken = (await randomBytesPromisified(20)).toString('hex');
+    const resetTokenExpiry = Date.now() + 3600000; // one hour = 3600000
+    const updatedUser = await ctx.db.mutation.updateUser({
+      where: { email: args.email },
+      data: { resetToken, resetTokenExpiry }
+    });
+    console.log('updated user', updatedUser);
+    return {
+      message: 'Check inbox for the instructions!.',
+    }
+    // 3. Send the email for the token
+  },
+  async resetPassword(parent, args, ctx, info) {
+    // 1. Check if password match?
+    const { resetToken, password, confirmPassword } = args;
+    if (password !== confirmPassword) {
+      throw Error('Yo Passwords don\'t match');
+    }
+    // 2. Check if token exists
+    const [user] = await ctx.db.query.users({
+      where: {
+        resetToken,
+        resetTokenExpiry_gte: Date.now() - 3600000,
+      }
+    });
+    if (!user) {
+      throw Error('Either token is invalid or expired!.');
+    }
+    // 3. Check if its valid
+    // 4. Hash new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // 5. Save the new password hash to the user
+   const updatedUser = await ctx.db.mutation.updateUser({
+     where: {
+       email: user.email,
+     },
+     data: {
+       password: hashedPassword,
+       resetToken: null,
+       resetTokenExpiry: null,
+     },
+   })
+    // 6. Generate JWT
+   const token = jwt.sign({
+       userId: updatedUser.id,
+    }, process.env.APP_SECRET);
+    // 7. set JWT token
+    ctx.response.cookie('token', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 24,
+    });
+    // 8. return the new user
+    return updatedUser;
+    // 9. Have A Beer
+  },
 };
 
 module.exports = Mutations;
