@@ -38,6 +38,7 @@ type Mutation {
     ): User!
 
     signout: SuccessMessage
+    requestReset( email: String! ): SuccessMessage
 }
 
 type Query {
@@ -46,4 +47,10 @@ type Query {
     item(where: ItemWhereUniqueInput!): Item
     itemsConnection(where: ItemWhereInput): ItemConnection!
     me: User
+}
+
+type User {
+  name: String!
+  email: String!
+  permissions: [Permission]
 }

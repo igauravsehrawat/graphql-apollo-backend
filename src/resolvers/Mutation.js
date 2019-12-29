@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { randomBytes } = require('crypto');
+const { promisify } = require('util');
 
 const Mutations = {
   // TODO: Write the authentication layer
@@ -81,6 +83,26 @@ const Mutations = {
       message: 'Goodbye;)',
     }
   },
+  async requestReset (parent, args, ctx, info) {
+  // 1. Check if user exists
+  const user = ctx.db.query.user({ where: { email: args.email } });
+  if (!user) {
+      throw Error(`User does not exists by ${args.email}`);
+  }
+  // 2. Generate the reset token and set it to User
+  const randomBytesPromisified = promisify(randomBytes);
+  const resetToken = (await randomBytesPromisified(20)).toString('hex');
+  const resetTokenExpiry = Date.now() + 3600000; // one hour = 3600000
+  const updatedUser = await ctx.db.mutation.updateUser({
+    where: { email: args.email },
+    data: { resetToken, resetTokenExpiry }
+  });
+  console.log('updated user', updatedUser);
+  return {
+    message: 'Check inbox for the instructions!.',
+  }
+  // 3. Send the email for the token
+  }
 };
 
 module.exports = Mutations;
