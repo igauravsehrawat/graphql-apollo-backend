@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
+const { transport, makeANiceEmail } = require('../utils');
 
 const Mutations = {
   // TODO: Write the authentication layer
@@ -85,10 +86,11 @@ const Mutations = {
   },
   async requestReset (parent, args, ctx, info) {
     // 1. Check if user exists
-    const user = ctx.db.query.user({ where: { email: args.email } });
+    const user = await ctx.db.query.user({ where: { email: args.email } });
     if (!user) {
         throw Error(`User does not exists by ${args.email}`);
     }
+    console.log("TCL: requestReset -> user", user)
     // 2. Generate the reset token and set it to User
     const randomBytesPromisified = promisify(randomBytes);
     const resetToken = (await randomBytesPromisified(20)).toString('hex');
@@ -97,11 +99,22 @@ const Mutations = {
       where: { email: args.email },
       data: { resetToken, resetTokenExpiry }
     });
-    console.log('updated user', updatedUser);
+    const mailResponse = await transport.sendMail({
+      from: 'root@igauravsehrawat.com',
+      to: user.email,
+      subject: 'Get that reset done',
+      html: makeANiceEmail(`
+      Here you go
+      <p>
+      You are ready to reset your password with <a href='${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}'>this</a> link.
+      </p>`)
+    });
+    console.log('updated user', updatedUser, { responseFromMail: mailResponse });
     return {
       message: 'Check inbox for the instructions!.',
     }
     // 3. Send the email for the token
+
   },
   async resetPassword(parent, args, ctx, info) {
     // 1. Check if password match?
