@@ -20,7 +20,20 @@ server.express.use((req, res, next) => {
       req.userId = userId;
     }
   }
-  next();
+  return next();
+});
+
+// populating the user
+server.use((req, res, next) => {
+  if (!req.userId) {
+    return next();
+  }
+  // also populate all the fields required
+  const user = db.query.user({ where: {
+    id: req.userId,
+  }}, '{ id, email, name, permissions }')
+  req.user = user;
+  return next();
 });
 
 server.start({
