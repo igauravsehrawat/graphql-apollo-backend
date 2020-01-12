@@ -10,6 +10,13 @@ const Mutations = {
     // If you see in prisma.graphql there is Mutation but here we using mutation
     const item = await ctx.db.mutation.createItem({
       data: {
+        user: {
+          // This is how to create relatioiship between
+          // User and Item
+          connect: {
+            id: ctx.request.userId,
+          }
+        },
         ...args
       },
     }, info);
@@ -21,6 +28,11 @@ const Mutations = {
     delete updateData.id;
     return ctx.db.mutation.updateItem({
       data: {
+        user: {
+          connect: {
+            id: ctx.request.userId,
+          },
+        },
         ...updateData
       },
       where: {

@@ -10,7 +10,8 @@ type Mutation {
         description: String,
         image: String,
         largeImage: String,
-        price: Int
+        price: Int,
+        user: String,
     ): Item!
 
     updateItem(
@@ -20,6 +21,7 @@ type Mutation {
         price: Int,
         image: String,
         largeImage: String,
+        user: String,
     ): Item!
 
     deleteItem(
