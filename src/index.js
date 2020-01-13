@@ -24,14 +24,14 @@ server.express.use((req, res, next) => {
 });
 
 // populating the user
-server.use((req, res, next) => {
+server.use(async (req, res, next) => {
   if (!req.userId) {
     return next();
   }
   // also populate all the fields required
-  const user = db.query.user({ where: {
+  const user = await db.query.users({ where: {
     id: req.userId,
-  }}, '{ id, email, name, permissions }')
+  }}, '{ id, email, name, permissions }');
   req.user = user;
   return next();
 });
