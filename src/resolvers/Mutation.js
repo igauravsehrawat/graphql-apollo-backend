@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { randomBytes } = require('crypto');
 const { promisify } = require('util');
 const { transport, makeANiceEmail } = require('../utils');
+const { hasPermission } = require('../utils');
 
 const Mutations = {
   // TODO: Write the authentication layer
@@ -140,7 +141,7 @@ const Mutations = {
         resetToken,
         resetTokenExpiry_gte: Date.now() - 3600000,
       }
-    });
+    }, info);
     if (!user) {
       throw Error('Either token is invalid or expired!.');
     }
@@ -171,6 +172,37 @@ const Mutations = {
     return updatedUser;
     // 9. Have A Beer
   },
+  async updatePermissions(parent, args, ctx, info) {
+    console.log('ctx, updatedUser', args,ctx.request.userId);
+    console.log('updatePermissions...');
+    // check if user is logged in
+    if (!ctx.request.userId) {
+      throw Error('You must be logged in!!');
+    }
+    // check if user has permissions
+    const user = await ctx.db.query.user({
+      where: {
+        id: ctx.request.userId,
+      },
+    }, info);
+    // update the permission
+    hasPermission(user, ['ADMIN', 'PERMISSIONUPDATE']);
+    // if (!ownUser && !isPermitted) {
+    //   throw Error('Operation not permitted');
+    // I am not where similar kind of logic used, may be it was flawed
+    // }
+    const updatedUser = await ctx.db.mutation.updateUser({
+      data: {
+        permissions: {
+          set: args.permissions
+        }
+      },
+      where: {
+        id: args.userId
+      }
+    }, info);
+    return updatedUser;
+  }
 };
 
 module.exports = Mutations;
