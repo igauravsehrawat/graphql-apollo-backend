@@ -47,10 +47,20 @@ const Mutations = {
   async deleteItem(parent, args, ctx, info) {
     const where = { id: args.id };
     // 1. Check if item exists
-    const item = await ctx.db.query.item({ where }, `{ id title }`);
+    const [ item, user ] = await Promise.all([
+      ctx.db.query.item({ where }, `{ id title user { id name } }`),
+      ctx.db.query.user({ where: { id: ctx.request.userId } }, `{id permissions}`)
+    ]);
+    console.log("TCL: deleteItem -> [ item, user ]", [ item, user ])
     // 2. Check permission
+    const ownUser = item.user.id === user.id;
+    const permissionOrNot = user.permissions.some(permission => ['ADMIN', 'ITEMDELETE'].includes(permission));
     // TODO:
     // 3. Delete Item
+    if (!ownUser && !permissionOrNot) {
+      // neither you are user, neither you have permission
+      throw Error('You don\'t have permissioins!!!');
+    }
     return ctx.db.mutation.deleteItem({ where }, info);
   },
 
