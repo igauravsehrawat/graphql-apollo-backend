@@ -43,6 +43,7 @@ type Mutation {
     requestReset( email: String! ): SuccessMessage
     resetPassword( resetToken: String!, password: String!, confirmPassword: String! ): User
     updatePermissions( userId: ID!, permissions: [Permission] ): User
+    addToCart(id: ID!): CartItem
 }
 
 type Query {
@@ -59,4 +60,14 @@ type User {
     name: String!
     email: String!
     permissions: [Permission]
+    cart: [CartItem!]!
 }
+
+type CartItem {
+  id: ID!
+  user: User!
+  items: Item!
+  quanity: Int!
+}
+
+# This file goes to frontend/client.
