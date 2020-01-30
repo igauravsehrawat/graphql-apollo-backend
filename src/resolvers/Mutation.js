@@ -213,9 +213,9 @@ const Mutations = {
     }, info);
     return updatedUser;
   },
-  async addToCart(parent, ctx, args, info) {
+  async addToCart(parent, args, ctx, info) { // paci
     // check if user is logged in
-    const { itemId } = args.id;
+    const itemId = args.id;
     const { userId } = ctx.request;
     if (!userId) {
       throw Error('User must be logged in!!');
@@ -242,10 +242,11 @@ const Mutations = {
     return ctx.db.mutation.createCartItem({
       data: {
         user: {
-          connect: userId,
+          // connect on what field
+          connect: { id: userId },
         },
         item: {
-          connect: itemId,
+          connect: { id: itemId },
         }
       }
     }, info);

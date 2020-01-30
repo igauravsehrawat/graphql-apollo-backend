@@ -1,5 +1,5 @@
-# source: https://eu1.prisma.sh/igaurav/igauravAmsterdam/dev
-# timestamp: Mon Jan 27 2020 08:33:53 GMT+0100 (Central European Standard Time)
+# source: https://eu1.prisma.sh/igaurav/advanced-react-backend/dev
+# timestamp: Sun Jan 26 2020 17:57:13 GMT+0100 (Central European Standard Time)
 
 type AggregateCartItem {
   count: Int!
@@ -21,7 +21,7 @@ type BatchPayload {
 type CartItem implements Node {
   id: ID!
   user: User!
-  item: Item!
+  items: Item!
   quanity: Int!
 }
 
@@ -39,7 +39,7 @@ input CartItemCreateInput {
   id: ID
   quanity: Int
   user: UserCreateOneWithoutCartInput!
-  item: ItemCreateOneInput!
+  items: ItemCreateOneInput!
 }
 
 input CartItemCreateManyWithoutUserInput {
@@ -50,7 +50,7 @@ input CartItemCreateManyWithoutUserInput {
 input CartItemCreateWithoutUserInput {
   id: ID
   quanity: Int
-  item: ItemCreateOneInput!
+  items: ItemCreateOneInput!
 }
 
 """An edge in a connection."""
@@ -60,7 +60,7 @@ type CartItemEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
-}
+},
 
 enum CartItemOrderByInput {
   id_ASC
@@ -189,7 +189,7 @@ input CartItemSubscriptionWhereInput {
 input CartItemUpdateInput {
   quanity: Int
   user: UserUpdateOneRequiredWithoutCartInput
-  item: ItemUpdateOneRequiredInput
+  items: ItemUpdateOneRequiredInput
 }
 
 input CartItemUpdateManyDataInput {
@@ -219,7 +219,7 @@ input CartItemUpdateManyWithWhereNestedInput {
 
 input CartItemUpdateWithoutUserDataInput {
   quanity: Int
-  item: ItemUpdateOneRequiredInput
+  items: ItemUpdateOneRequiredInput
 }
 
 input CartItemUpdateWithWhereUniqueWithoutUserInput {
@@ -305,7 +305,7 @@ input CartItemWhereInput {
   """All values greater than or equal the given value."""
   quanity_gte: Int
   user: UserWhereInput
-  item: ItemWhereInput
+  items: ItemWhereInput
 }
 
 input CartItemWhereUniqueInput {
