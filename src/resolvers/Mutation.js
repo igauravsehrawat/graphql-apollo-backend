@@ -223,8 +223,8 @@ const Mutations = {
     // Query the cart
     const [existingCartItem] = await ctx.db.query.cartItems({
       where: {
-        user: userId,
-        item: itemId,
+        user: { id: userId },
+        item: { id: itemId },
       }
     });
     if (existingCartItem) {
@@ -239,6 +239,7 @@ const Mutations = {
       }, info)
     }
     // Check if item already exists
+    console.log('going to create cart item');
     return ctx.db.mutation.createCartItem({
       data: {
         user: {

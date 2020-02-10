@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/igaurav/igauravAmsterdam/dev
-# timestamp: Mon Jan 27 2020 08:33:53 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Feb 10 2020 19:25:00 GMT+0100 (Central European Standard Time)
 
 type AggregateCartItem {
   count: Int!
@@ -22,7 +22,7 @@ type CartItem implements Node {
   id: ID!
   user: User!
   item: Item!
-  quanity: Int!
+  quantity: Int!
 }
 
 """A connection to a list of items."""
@@ -37,7 +37,7 @@ type CartItemConnection {
 
 input CartItemCreateInput {
   id: ID
-  quanity: Int
+  quantity: Int
   user: UserCreateOneWithoutCartInput!
   item: ItemCreateOneInput!
 }
@@ -49,7 +49,7 @@ input CartItemCreateManyWithoutUserInput {
 
 input CartItemCreateWithoutUserInput {
   id: ID
-  quanity: Int
+  quantity: Int
   item: ItemCreateOneInput!
 }
 
@@ -65,13 +65,13 @@ type CartItemEdge {
 enum CartItemOrderByInput {
   id_ASC
   id_DESC
-  quanity_ASC
-  quanity_DESC
+  quantity_ASC
+  quantity_DESC
 }
 
 type CartItemPreviousValues {
   id: ID!
-  quanity: Int!
+  quantity: Int!
 }
 
 input CartItemScalarWhereInput {
@@ -123,28 +123,28 @@ input CartItemScalarWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  quanity: Int
+  quantity: Int
 
   """All values that are not equal to given value."""
-  quanity_not: Int
+  quantity_not: Int
 
   """All values that are contained in given list."""
-  quanity_in: [Int!]
+  quantity_in: [Int!]
 
   """All values that are not contained in given list."""
-  quanity_not_in: [Int!]
+  quantity_not_in: [Int!]
 
   """All values less than the given value."""
-  quanity_lt: Int
+  quantity_lt: Int
 
   """All values less than or equal the given value."""
-  quanity_lte: Int
+  quantity_lte: Int
 
   """All values greater than the given value."""
-  quanity_gt: Int
+  quantity_gt: Int
 
   """All values greater than or equal the given value."""
-  quanity_gte: Int
+  quantity_gte: Int
 }
 
 type CartItemSubscriptionPayload {
@@ -187,17 +187,17 @@ input CartItemSubscriptionWhereInput {
 }
 
 input CartItemUpdateInput {
-  quanity: Int
+  quantity: Int
   user: UserUpdateOneRequiredWithoutCartInput
   item: ItemUpdateOneRequiredInput
 }
 
 input CartItemUpdateManyDataInput {
-  quanity: Int
+  quantity: Int
 }
 
 input CartItemUpdateManyMutationInput {
-  quanity: Int
+  quantity: Int
 }
 
 input CartItemUpdateManyWithoutUserInput {
@@ -218,7 +218,7 @@ input CartItemUpdateManyWithWhereNestedInput {
 }
 
 input CartItemUpdateWithoutUserDataInput {
-  quanity: Int
+  quantity: Int
   item: ItemUpdateOneRequiredInput
 }
 
@@ -282,28 +282,28 @@ input CartItemWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  quanity: Int
+  quantity: Int
 
   """All values that are not equal to given value."""
-  quanity_not: Int
+  quantity_not: Int
 
   """All values that are contained in given list."""
-  quanity_in: [Int!]
+  quantity_in: [Int!]
 
   """All values that are not contained in given list."""
-  quanity_not_in: [Int!]
+  quantity_not_in: [Int!]
 
   """All values less than the given value."""
-  quanity_lt: Int
+  quantity_lt: Int
 
   """All values less than or equal the given value."""
-  quanity_lte: Int
+  quantity_lte: Int
 
   """All values greater than the given value."""
-  quanity_gt: Int
+  quantity_gt: Int
 
   """All values greater than or equal the given value."""
-  quanity_gte: Int
+  quantity_gte: Int
   user: UserWhereInput
   item: ItemWhereInput
 }
