@@ -1,5 +1,5 @@
 #endpoint: ${env:PRISMA_ENDPOINT}
-endpoint: https://heroku-b21a4356a6.herokuapp.com/graphql-backend-heroku/prod
+endpoint: https://heroku-364050c3f4.herokuapp.com/graphql-backend-heroku/prod
 datamodel: datamodel.prisma
 secret: ${env:PRISMA_SECRET}
 hooks:
