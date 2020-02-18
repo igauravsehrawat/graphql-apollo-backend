@@ -67,7 +67,7 @@ type CartItem {
   id: ID!
   user: User!
   item: Item!
-  quanity: Int!
+  quantity: Int!
 }
 
 # This file goes to frontend/client.
