@@ -251,6 +251,27 @@ const Mutations = {
         }
       }
     }, info);
+  },
+  async removeFromCart(parent, args, ctx, info) {
+    const itemId = args.id;
+    console.log("TCL: removeFromCart -> itemId", JSON.stringify(itemId))
+    const item = await ctx.db.query.item({
+      where: {
+        id: itemId,
+      }
+    }, `{ id, user{ id }}`);
+    const { userId } = ctx.request;
+    if (!item) throw new Error('Item does not exists');
+    if (item.user.id !== userId) throw new Error('Trying to cheat!! Huh!!.');
+    if (!userId) {
+      throw Error('User must be logged in!!');
+    }
+    console.log('just here');
+    return ctx.db.mutation.deleteCartItem({
+      where: {
+        id: itemId,
+      }
+    }, info);
   }
 };
 
