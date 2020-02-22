@@ -255,7 +255,7 @@ const Mutations = {
   async removeFromCart(parent, args, ctx, info) {
     const itemId = args.id;
     console.log("TCL: removeFromCart -> itemId", JSON.stringify(itemId))
-    const item = await ctx.db.query.item({
+    const item = await ctx.db.query.cartItem({
       where: {
         id: itemId,
       }
