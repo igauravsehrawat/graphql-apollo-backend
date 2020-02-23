@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/igaurav/igauravAmsterdam/dev
-# timestamp: Mon Feb 10 2020 19:25:00 GMT+0100 (Central European Standard Time)
+# timestamp: Sat Feb 22 2020 20:12:53 GMT+0100 (Central European Standard Time)
 
 type AggregateCartItem {
   count: Int!
@@ -21,7 +21,7 @@ type BatchPayload {
 type CartItem implements Node {
   id: ID!
   user: User!
-  item: Item!
+  item: Item
   quantity: Int!
 }
 
@@ -39,7 +39,7 @@ input CartItemCreateInput {
   id: ID
   quantity: Int
   user: UserCreateOneWithoutCartInput!
-  item: ItemCreateOneInput!
+  item: ItemCreateOneInput
 }
 
 input CartItemCreateManyWithoutUserInput {
@@ -50,7 +50,7 @@ input CartItemCreateManyWithoutUserInput {
 input CartItemCreateWithoutUserInput {
   id: ID
   quantity: Int
-  item: ItemCreateOneInput!
+  item: ItemCreateOneInput
 }
 
 """An edge in a connection."""
@@ -189,7 +189,7 @@ input CartItemSubscriptionWhereInput {
 input CartItemUpdateInput {
   quantity: Int
   user: UserUpdateOneRequiredWithoutCartInput
-  item: ItemUpdateOneRequiredInput
+  item: ItemUpdateOneInput
 }
 
 input CartItemUpdateManyDataInput {
@@ -219,7 +219,7 @@ input CartItemUpdateManyWithWhereNestedInput {
 
 input CartItemUpdateWithoutUserDataInput {
   quantity: Int
-  item: ItemUpdateOneRequiredInput
+  item: ItemUpdateOneInput
 }
 
 input CartItemUpdateWithWhereUniqueWithoutUserInput {
@@ -455,9 +455,11 @@ input ItemUpdateManyMutationInput {
   price: Int
 }
 
-input ItemUpdateOneRequiredInput {
+input ItemUpdateOneInput {
   create: ItemCreateInput
   connect: ItemWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
   update: ItemUpdateDataInput
   upsert: ItemUpsertNestedInput
 }
