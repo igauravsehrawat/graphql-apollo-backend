@@ -279,7 +279,6 @@ const Mutations = {
     // check if logged and cart user is same
     // calculate price
     // create stripe charge
-    // return the order to the client
     const { userId } = ctx.request;
     if (!userId) {
       throw Error('You must be logged in');
@@ -296,7 +295,7 @@ const Mutations = {
       cart {
         id
         quantity
-        item { title price description id image }
+        item { title price description id image largeImage }
       }
     }`)
     const amount = user.cart.reduce((tally, cartItem) => tally + cartItem.item.price * cartItem.quantity, 0)
@@ -306,6 +305,33 @@ const Mutations = {
       currency: 'USD',
       source: args.token,
     })
+    // create order item
+    const orderItems = user.cart.map(cartItem => {
+      const orderItem = {
+        quantity: cartItem.quantity,
+        user: { connect: { id: userId }},
+        ...cartItem.item,
+      }
+      delete orderItem.id;
+      return orderItem;
+    });
+    const order = await ctx.db.mutation.createOrder({
+      data: {
+        total: amount,
+        user: {connect: {id: userId}},
+        charge: charge.id,
+        items: { create: orderItems }
+      }
+    });
+    // clear up the cart items
+    const cartIds = user.cart.map(cartItem => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        id_in: cartIds,
+      }
+    });
+    //return the order
+    return order
   }
 };
 
