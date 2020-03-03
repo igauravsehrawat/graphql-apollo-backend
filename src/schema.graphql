@@ -55,6 +55,8 @@ type Query {
     itemsConnection(where: ItemWhereInput): ItemConnection!
     me: User,
     users: [User]!,
+    # order may not be found
+    order(id: ID!): Order
 }
 
 type User {
