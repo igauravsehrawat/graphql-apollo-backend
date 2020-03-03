@@ -29,7 +29,7 @@ server.use(async (req, res, next) => {
     return next();
   }
   // also populate all the fields required
-  const user = await db.query.users({ where: {
+  const user = await db.query.user({ where: {
     id: req.userId,
   }}, '{ id, email, name, permissions }');
   req.user = user;
