@@ -57,6 +57,7 @@ type Query {
     users: [User]!,
     # order may not be found
     order(id: ID!): Order
+    orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
 }
 
 type User {

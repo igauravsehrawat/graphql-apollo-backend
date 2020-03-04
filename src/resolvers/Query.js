@@ -28,7 +28,7 @@ const Query = {
     if (!ctx.request.userId) {
       throw Error ('You need to be logged in!!');
     }
-    hasPermission(ctx.request.user[0], ['ADMIN', 'PERMISSIONUPDATE']);
+    hasPermission(ctx.request.user, ['ADMIN', 'PERMISSIONUPDATE']);
     // 2. fetch the cusers
     return ctx.db.query.users({}, info);
   },
@@ -52,6 +52,20 @@ const Query = {
       throw new Error('You do not have permissions budd');
     }
     return order;
+  },
+  async orders(parent, args, ctx, info) {
+    // 1. check if user has permission to query
+    const {userId} = ctx.request;
+    if (!userId) {
+      throw Error('You need to be logged in!!');
+    }
+    hasPermission(ctx.request.user, ['USER', 'ADMIN']);
+    // 2. fetch the cusers
+    return ctx.db.query.orders({
+      where: {
+        user: { id: userId },
+      }
+    }, info);
   }
 }
 
